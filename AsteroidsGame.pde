@@ -1,15 +1,75 @@
-//your variable declarations here
+SpaceShip s = new SpaceShip();//your variable declarations here
+Star[] ss = new Star[100];
+boolean w = false;
+boolean a = false;
+boolean d = false;
 public void setup() 
 {
-  //your code here
+  size(700,700);
+  for(int i=0;i<ss.length;i++)
+  {
+    ss[i] = new Star();
+  }
 }
 public void draw() 
 {
-  //your code here
+  background(0);
+  s.show();
+  s.move();
+  for(int i=0;i<ss.length;i++)
+  {
+    ss[i].show();
+  }
+  if(w == true && a == true)
+  {
+    s.accelerate(.1);
+    s.rotate(-5);
+  }
+  else if(w==true&&d==true)
+  {
+    s.accelerate(.1);
+    s.rotate(5);
+  }
+  else if(w == true)
+  {
+    s.accelerate(.1);
+  }
+  else if(a == true)
+  {
+    s.rotate(-5);
+  }
+  else if(d == true)
+  {
+    s.rotate(5);
+  }
 }
-class SpaceShip //extends Floater  
+class SpaceShip extends Floater  
 {   
-    //your code here
+  public void setX(int x){myCenterX = x;}//your code here
+  public int getX(){return (int)myCenterX;}
+  public void setY(int y){myCenterY = y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}
+  public double getPointDirection(){return myPointDirection;}
+    SpaceShip()
+    { 
+    myColor = 255;
+    corners = 3;
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+    xCorners[0] = -10;
+    yCorners[0] = -10;
+    xCorners[1] = 20;
+    yCorners[1] = 0;
+    xCorners[2] = -10;
+    yCorners[2] = 10;
+    myCenterX = 350;
+    myCenterY = 350;
+    }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -88,3 +148,55 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }   
 } 
 
+public void keyPressed()
+{
+  if(key=='f')//hyperspace
+  {
+    s.setX((int)(Math.random()*700));
+    s.setY((int)(Math.random()*700));
+    s.setPointDirection((int)(Math.random()*360));
+    s.setDirectionX(0);
+    s.setDirectionY(0);
+  }
+  else if(key =='a')
+  {
+    a = true;
+  }
+  else if(key =='d')
+  {
+    d = true; 
+  } 
+  else if(key =='w')
+  {
+    w = true;
+  }
+}
+public void keyReleased()
+{
+  if(key=='a')
+  {
+    a = false;
+  }
+  else if(key=='d')
+  {
+    d = false;
+  }
+  else if(key=='w')
+  {
+    w = false;
+  }
+}
+class Star
+{
+  int myX, myY;
+  Star()
+  {
+    myX = (int)(Math.random()*700);
+    myY = (int)(Math.random()*700);
+  }
+  void show()
+  {
+    fill(255);
+    ellipse(myX,myY,5,5);
+  }
+}
