@@ -1,4 +1,5 @@
 SpaceShip s = new SpaceShip();//your variable declarations here
+Asteroid[] sss = new Asteroid[10];
 Star[] ss = new Star[100];
 boolean w = false;
 boolean a = false;
@@ -10,29 +11,38 @@ public void setup()
   {
     ss[i] = new Star();
   }
+  for(int i=0;i<sss.length;i++)
+  {
+    sss[i] = new Asteroid();
+  }
 }
 public void draw() 
 {
   background(0);
-  s.show();
-  s.move();
   for(int i=0;i<ss.length;i++)
   {
     ss[i].show();
   }
+  for(int i=0;i<sss.length;i++)
+  {
+    sss[i].show();
+    sss[i].move();
+  }
+  s.show();
+  s.move();
   if(w == true && a == true)
   {
-    s.accelerate(.1);
+    s.accelerate(.15);
     s.rotate(-5);
   }
   else if(w==true&&d==true)
   {
-    s.accelerate(.1);
+    s.accelerate(.15);
     s.rotate(5);
   }
   else if(w == true)
   {
-    s.accelerate(.1);
+    s.accelerate(.15);
   }
   else if(a == true)
   {
@@ -55,8 +65,8 @@ class SpaceShip extends Floater
   public double getDirectionY(){return myDirectionY;}
   public void setPointDirection(int degrees){myPointDirection = degrees;}
   public double getPointDirection(){return myPointDirection;}
-    SpaceShip()
-    { 
+  SpaceShip()
+  { 
     myColor = 255;
     corners = 3;
     xCorners = new int[corners];
@@ -69,7 +79,7 @@ class SpaceShip extends Floater
     yCorners[2] = 10;
     myCenterX = 350;
     myCenterY = 350;
-    }
+  }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
@@ -196,7 +206,87 @@ class Star
   }
   void show()
   {
-    fill(255);
-    ellipse(myX,myY,5,5);
+    fill(255,255,102);
+    ellipse(myX,myY,7,7);
+  }
+}
+class Asteroid extends Floater
+{
+  public void setX(int x){myCenterX = x;}//your code here
+  public int getX(){return (int)myCenterX;}
+  public void setY(int y){myCenterY = y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}
+  public double getPointDirection(){return myPointDirection;}
+  private double muns = (Math.random()*5-2);
+  int dums = (int)(Math.random()*4);
+  Asteroid()
+  { 
+    myDirectionX = (Math.random()*5-2);
+    myDirectionY = (Math.random()*5-2);
+    myColor = 139;
+    corners = 6;
+    xCorners = new int[corners];
+    yCorners = new int[corners];
+    xCorners[0] = -12;
+    yCorners[0] = 24;
+    xCorners[1] = 12;
+    yCorners[1] = 24;
+    xCorners[2] = 24;
+    yCorners[2] = 0;
+    xCorners[3] = 12;
+    yCorners[3] = -24;
+    xCorners[4] = -12;
+    yCorners[4] = -24;
+    xCorners[5] = -24;
+    yCorners[5] = 0;
+    if(dums==0)
+    {
+      myCenterX = 1;
+      myCenterY = (int)(Math.random()*699+1);
+    }
+    else if(dums==1)
+    {
+      myCenterX = (int)(Math.random()*699+1);
+      myCenterY = 1;
+    }
+    else if(dums==2)
+    {
+      myCenterX = 699;
+      myCenterY = (int)(Math.random()*699+1);
+    }
+    else if(dums==3)
+    {
+      myCenterX = (int)(Math.random()*699+1);
+      myCenterY = 699;
+    }
+  }
+  public void move ()
+  {
+    //change the x and y coordinates by myDirectionX and myDirectionY       
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY; 
+    myPointDirection+=muns;  
+    //wrap around screen    
+    if(myCenterX >width)
+    {
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }  
   }
 }
