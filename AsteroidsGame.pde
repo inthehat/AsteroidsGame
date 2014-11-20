@@ -1,9 +1,9 @@
 SpaceShip s = new SpaceShip();//your variable declarations here
-Asteroid[] sss = new Asteroid[10];
+ArrayList <Asteroid> sss = new ArrayList <Asteroid>();
 Star[] ss = new Star[100];
-boolean w = false;
-boolean a = false;
-boolean d = false;
+boolean g = false;
+boolean f = false;
+boolean h = false;
 public void setup() 
 {
   size(700,700);
@@ -11,9 +11,9 @@ public void setup()
   {
     ss[i] = new Star();
   }
-  for(int i=0;i<sss.length;i++)
+  for(int i=0;i<10;i++)
   {
-    sss[i] = new Asteroid();
+    sss.add(i, new Asteroid());
   }
 }
 public void draw() 
@@ -23,34 +23,38 @@ public void draw()
   {
     ss[i].show();
   }
-  for(int i=0;i<sss.length;i++)
+  for(int i=0;i<sss.size();i++)
   {
-    sss[i].show();
-    sss[i].move();
+    sss.get(i).show();
+    sss.get(i).move();
+    if(dist((float)sss.get(i).myCenterX+20, (float)sss.get(i).myCenterY+20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX-20, (float)sss.get(i).myCenterY-20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX+20, (float)sss.get(i).myCenterY-20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX-20, (float)sss.get(i).myCenterY+20, (float)s.myCenterX, (float)s.myCenterY)<20)
+    {
+      sss.remove(i);
+    }
   }
   s.show();
   s.move();
-  if(w == true && a == true)
+  if(g == true && f == true)
   {
     s.accelerate(.15);
-    s.rotate(-5);
+    s.rotate(-7);
   }
-  else if(w==true&&d==true)
+  else if(g==true&&h==true)
   {
     s.accelerate(.15);
-    s.rotate(5);
+    s.rotate(7);
   }
-  else if(w == true)
+  else if(g == true)
   {
     s.accelerate(.15);
   }
-  else if(a == true)
+  else if(f == true)
   {
-    s.rotate(-5);
+    s.rotate(-7);
   }
-  else if(d == true)
+  else if(h == true)
   {
-    s.rotate(5);
+    s.rotate(7);
   }
 }
 class SpaceShip extends Floater  
@@ -79,6 +83,7 @@ class SpaceShip extends Floater
     yCorners[2] = 10;
     myCenterX = 350;
     myCenterY = 350;
+    myPointDirection = 0;
   }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
@@ -160,7 +165,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
 
 public void keyPressed()
 {
-  if(key=='f')//hyperspace
+  if(key=='j')//hyperspace
   {
     s.setX((int)(Math.random()*700));
     s.setY((int)(Math.random()*700));
@@ -168,32 +173,32 @@ public void keyPressed()
     s.setDirectionX(0);
     s.setDirectionY(0);
   }
-  else if(key =='a')
+  else if(key =='f')
   {
-    a = true;
+    f = true;
   }
-  else if(key =='d')
+  else if(key =='h')
   {
-    d = true; 
+    h = true; 
   } 
-  else if(key =='w')
+  else if(key =='g')
   {
-    w = true;
+    g = true;
   }
 }
 public void keyReleased()
 {
-  if(key=='a')
+  if(key=='f')
   {
-    a = false;
+    f = false;
   }
-  else if(key=='d')
+  else if(key=='h')
   {
-    d = false;
+    h = false;
   }
-  else if(key=='w')
+  else if(key=='g')
   {
-    w = false;
+    g = false;
   }
 }
 class Star
@@ -223,7 +228,7 @@ class Asteroid extends Floater
   public void setPointDirection(int degrees){myPointDirection = degrees;}
   public double getPointDirection(){return myPointDirection;}
   private double muns = (Math.random()*5-2);
-  int dums = (int)(Math.random()*4);
+  private int dums = (int)(Math.random()*4); 
   Asteroid()
   { 
     myDirectionX = (Math.random()*5-2);
