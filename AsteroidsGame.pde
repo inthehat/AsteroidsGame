@@ -208,7 +208,7 @@ public void keyPressed()
   }
   if(key ==' ')
   {
-    if(ssss.size()<10
+    if(ssss.size()<10)
       ssss.add(new Bullet(s));
   }
 }
