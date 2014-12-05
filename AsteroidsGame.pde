@@ -1,5 +1,6 @@
 SpaceShip s = new SpaceShip();//your variable declarations here
 ArrayList <Asteroid> sss = new ArrayList <Asteroid>();
+ArrayList <Bullet> ssss = new ArrayList <Bullet>();
 Star[] ss = new Star[100];
 boolean g = false;
 boolean f = false;
@@ -27,9 +28,28 @@ public void draw()
   {
     sss.get(i).show();
     sss.get(i).move();
-    if(dist((float)sss.get(i).myCenterX+20, (float)sss.get(i).myCenterY+20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX-20, (float)sss.get(i).myCenterY-20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX+20, (float)sss.get(i).myCenterY-20, (float)s.myCenterX, (float)s.myCenterY)<20 || dist((float)sss.get(i).myCenterX-20, (float)sss.get(i).myCenterY+20, (float)s.myCenterX, (float)s.myCenterY)<20)
+    //if(dist((float)sss.get(i).getX()+20, (float)sss.get(i).getY()+20, (float)s.getX(), (float)s.getY())<20 || dist((float)sss.get(i).getX()-20, (float)sss.get(i).getY()-20, (float)s.getX(), (float)s.getY())<20 || dist((float)sss.get(i).getX()+20, (float)sss.get(i).getY()-20, (float)s.getX(), (float)s.getY())<20 || dist((float)sss.get(i).getX()-20, (float)sss.get(i).getY()+20, (float)s.getX(), (float)s.getY())<20)
+    //{
+    //  sss.remove(i);
+    //}
+  }
+  for(int i=0;i<ssss.size();i++)
+  {
+    ssss.get(i).show();
+    ssss.get(i).move();
+    if(ssss.get(i).myCenterX<10 || ssss.get(i).myCenterX>690 || ssss.get(i).myCenterY<10 || ssss.get(i).myCenterY>690)
     {
-      sss.remove(i);
+      ssss.remove(i);
+      break;
+    }
+    for(int j=0;j<sss.size();j++)
+    {
+      if(dist((float)sss.get(j).getX()+20, (float)sss.get(j).getY()+20, (float)ssss.get(i).getX(), (float)ssss.get(i).getY())<20 || dist((float)sss.get(j).getX()-20, (float)sss.get(j).getY()-20, (float)ssss.get(i).getX(), (float)ssss.get(i).getY())<20 || dist((float)sss.get(j).getX()+20, (float)sss.get(j).getY()-20, (float)ssss.get(i).getX(), (float)ssss.get(i).getY())<20 || dist((float)sss.get(j).getX()-20, (float)sss.get(j).getY()+20, (float)ssss.get(i).getX(), (float)ssss.get(i).getY())<20)
+      {
+        sss.remove(j);
+        ssss.remove(i);
+        break;
+      }
     }
   }
   s.show();
@@ -46,7 +66,8 @@ public void draw()
   }
   else if(g == true)
   {
-    s.accelerate(.15);
+    s.accelerate(.15
+      );
   }
   else if(f == true)
   {
@@ -185,6 +206,10 @@ public void keyPressed()
   {
     g = true;
   }
+  if(key ==' ')
+  {
+      ssss.add(new Bullet(s));
+  }
 }
 public void keyReleased()
 {
@@ -293,5 +318,39 @@ class Asteroid extends Floater
     {     
       myCenterY = height;    
     }  
+  }
+}
+class Bullet extends Floater
+{
+  public void setX(int x){myCenterX = x;}//your code here
+  public int getX(){return (int)myCenterX;}
+  public void setY(int y){myCenterY = y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}
+  public double getPointDirection(){return myPointDirection;}
+  public double dRadians =myPointDirection*(Math.PI/180);
+  Bullet(SpaceShip theShip)
+  {
+    myCenterX = s.myCenterX;
+    myCenterY = s.myCenterY;
+    myPointDirection = s.myPointDirection;
+    myColor = 200;
+    double dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + s.myDirectionX;
+    myDirectionY = 5 * Math.sin(dRadians) + s.myDirectionY;
+  }
+  public void show()
+  {
+    fill(myColor);   
+    stroke(myColor);    
+    //convert degrees to radians for sin and cos         
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    beginShape();         
+    ellipse((float)myCenterX,(float)myCenterY,(float)10,(float)10);
+    endShape(CLOSE);  
   }
 }
